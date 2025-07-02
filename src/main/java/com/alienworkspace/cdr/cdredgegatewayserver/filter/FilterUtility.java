@@ -25,6 +25,7 @@ public class FilterUtility {
     }
 
     public ServerWebExchange setRequestHeader(ServerWebExchange exchange, String key, String value) {
+        exchange.getAttributes().put(key, value);
         return exchange.mutate()
                 .request(exchange.getRequest().mutate()
                         .header(key, value)

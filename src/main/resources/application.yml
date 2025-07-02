@@ -11,9 +11,19 @@ spring:
             locator:
               enabled: false
               lower-case-service-id: true
+          httpclient:
+            connect-timeout: 5000 # The time to wait for connection thread from other microservices
+            response-timeout: 2s # The time to wait for response from other microservices
   profiles:
     active:
       - "prod"
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      connect-timeout: 2s
+      timeout: 1s
 
 server:
   port: 9191
@@ -57,3 +67,13 @@ logging:
       alienworkspace:
         cdr:
           cdredgegatewayserver: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default: # name of the circuit breaker, if we want to have multiple circuit breaker configurations in our microservice
+        # we can change this particular defaults one from default to any name so we can reference the name where we wish to use it
+        slidingWindowSize: 10 # How many request to track before deciding to switch from closed to open
+        permittedNumberOfCallsInHalfOpenState: 2 # How many requests to allow in half open state before switching to closed state
+        failureRateThreshold: 50 # Percentage of failures to trigger circuit breaker
+        waitDurationInOpenState: 10s # How long to wait before trying to switch to half-open state

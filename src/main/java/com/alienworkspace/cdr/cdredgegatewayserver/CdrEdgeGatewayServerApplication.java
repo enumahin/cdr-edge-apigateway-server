@@ -46,7 +46,7 @@ public class CdrEdgeGatewayServerApplication {
 										.setFallbackUri("forward:/contact-support"))
 						.retry(config -> config
 								.setRetries(3)
-								.setMethods(HttpMethod.GET) // Set retry for idempotent requests
+								.setMethods(HttpMethod.GET) // Set retry for idempotent requests only (my choice)
 								.setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true)
 						).requestRateLimiter(config -> config
 								.setRateLimiter(redisRateLimiter())

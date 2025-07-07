@@ -13,7 +13,7 @@ spring:
               lower-case-service-id: true
           httpclient:
             connect-timeout: 5000 # The time to wait for connection thread from other microservices
-            response-timeout: 2s # The time to wait for response from other microservices
+            response-timeout: 20s # The time to wait for response from other microservices
   profiles:
     active:
       - "prod"
@@ -45,6 +45,9 @@ management:
       show-details: always
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 info:
   app:
@@ -67,6 +70,8 @@ logging:
       alienworkspace:
         cdr:
           cdredgegatewayserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j:
   circuitbreaker:

@@ -10,10 +10,7 @@ import reactor.core.publisher.Mono;
 public class FallbackController {
 
     @RequestMapping("/contact-support")
-    public Mono<String> fallback(ServerWebExchange exchange) {
-        HttpHeaders responseHeaders = exchange.getResponse().getHeaders();
-            responseHeaders.add("X-cdr-correlation-id",
-                    exchange.getAttributes().get("X-cdr-correlation-id").toString());
+    public Mono<String> fallback() {
         return Mono.just("An error occurred. Please try after some time or contact support.");
     }
 }
